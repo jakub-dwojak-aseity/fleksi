@@ -37,7 +37,7 @@ Fleksi is an API-first monorepo platform built by Aseity for modern workforce ma
 
 4. **Start services**:
    ```bash
-   # Backend
+   # Backend (includes Gradle wrapper)
    cd backend && ./gradlew bootRun
    
    # Mobile (in another terminal)

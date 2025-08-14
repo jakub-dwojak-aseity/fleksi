@@ -81,9 +81,10 @@ backend/build/generated/
 # Gradle
 backend/.gradle/
 backend/build/
-backend/gradle/
-backend/gradlew
-backend/gradlew.bat
+# Keep Gradle wrapper files
+!backend/gradle/
+!backend/gradlew
+!backend/gradlew.bat
 
 # Java
 *.class

@@ -55,6 +55,10 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v3
         
+      - name: Make gradlew executable
+        working-directory: ./backend
+        run: chmod +x ./gradlew
+        
       - name: Generate OpenAPI server code
         working-directory: ./backend
         run: ./gradlew openApiGenerate

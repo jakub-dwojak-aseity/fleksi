@@ -54,7 +54,7 @@ tasks.withType<Test> {
 openApiGenerate {
     generatorName.set("spring")
     inputSpec.set("$rootDir/../openapi/fleksi.yml")
-    outputDir.set("$buildDir/generated/openapi")
+    outputDir.set("${layout.buildDirectory.get()}/generated/openapi")
     apiPackage.set("pl.com.aseity.generated.api")
     modelPackage.set("pl.com.aseity.generated.model")
     configOptions.set(mapOf(
@@ -72,16 +72,12 @@ openApiGenerate {
 sourceSets {
     main {
         java {
-            srcDirs("$buildDir/generated/openapi/src/main/java")
+            srcDirs("${layout.buildDirectory.get()}/generated/openapi/src/main/java")
         }
     }
 }
 
 tasks.compileJava {
-    dependsOn(tasks.openApiGenerate)
-}
-
-tasks.named("generateServer") {
     dependsOn(tasks.openApiGenerate)
 }
 
