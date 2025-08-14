@@ -5,10 +5,12 @@
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
-    "ios": "expo start --ios",
+    "ios": "expo start --ios", 
     "web": "expo start --web",
-    "gen:client": "openapi-generator-cli generate -i ../openapi/fleksi.yml -g typescript-axios -o src/api --additional-properties=supportsES6=true,withSeparateModelsAndApi=true",
-    "type-check": "tsc --noEmit"
+    "gen:client": "openapi-generator-cli generate -i ../openapi/fleksi.yml -g typescript-axios -o src/api --additional-properties=supportsES6=true,withSeparateModelsAndApi=true,modelPackage=models,apiPackage=apis",
+    "type-check": "tsc --noEmit",
+    "lint": "echo 'Lint not configured yet'",
+    "test": "echo 'Tests not configured yet'"
   },
   "dependencies": {
     "expo": "~51.0.28",

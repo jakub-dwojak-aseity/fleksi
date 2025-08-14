@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-seed-test-businesses
+      author: fleksi-team
+      context: dev
+      changes:
+        - insert:
+            tableName: businesses
+            columns:
+              - column:
+                  name: id
+                  value: '660e8400-e29b-41d4-a716-446655440001'
+              - column:
+                  name: name
+                  value: 'Restauracja Pod Kogutkiem'
+              - column:
+                  name: nip
+                  value: '1234567890'
+              - column:
+                  name: address
+                  value: 'ul. Główna 123, 00-001 Warszawa'
+              - column:
+                  name: verified
+                  valueBoolean: true
+              - column:
+                  name: created_at
+                  valueDate: '2024-01-01T10:00:00Z'
+              - column:
+                  name: updated_at
+                  valueDate: '2024-01-01T10:00:00Z'
+        - insert:
+            tableName: businesses
+            columns:
+              - column:
+                  name: id
+                  value: '660e8400-e29b-41d4-a716-446655440002'
+              - column:
+                  name: name
+                  value: 'Café Warszawa'
+              - column:
+                  name: nip
+                  value: '0987654321'
+              - column:
+                  name: address
+                  value: 'ul. Nowy Świat 45, 00-042 Warszawa'
+              - column:
+                  name: verified
+                  valueBoolean: true
+              - column:
+                  name: created_at
+                  valueDate: '2024-01-01T10:00:00Z'
+              - column:
+                  name: updated_at
+                  valueDate: '2024-01-01T10:00:00Z'

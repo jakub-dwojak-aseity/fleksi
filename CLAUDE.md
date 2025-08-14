@@ -89,3 +89,30 @@ Each feature package (e.g., `auth`, `shift`, `application`, `attendance`) contai
 - Generated code should not be manually modified
 - All API changes require corresponding test updates
 - Contract stability is maintained through API versioning
+
+## Code Style Guidelines
+
+### Access Modifiers
+- **Use `private` access modifier wherever possible** for fields, methods, and nested classes
+- Only use more permissive access when absolutely necessary for functionality
+- Apply `@NoArgsConstructor(access = AccessLevel.PRIVATE)` for utility classes
+
+### Lombok Usage
+- Use Lombok annotations for constructors, getters, setters, and builders
+- Prefer specific annotations (`@Getter`, `@Setter`, `@Builder`) over `@Data` when possible
+- Use `@NoArgsConstructor(access = AccessLevel.PRIVATE)` for utility classes
+
+### Constants and Magic Values
+- **Avoid magic strings and magic numbers** - use constants instead
+- Create dedicated constant classes for error types, messages, and common values
+- Store test constants in test utility classes for assertion comparisons
+
+### Database and Queries
+- **Prefer Liquibase YAML format** over XML for database migrations
+- **Use QueryDSL over manual @Query annotations** for type-safe queries
+- Organize changeSets by domain feature in versioned directories
+
+### Testing
+- **Use Spock Framework (Groovy) instead of JUnit** for all tests
+- Create test data factories with constants for expected values
+- Use Testcontainers for integration tests

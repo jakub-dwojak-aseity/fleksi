@@ -1,0 +1,74 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-create-shifts-table
+      author: fleksi-team
+      changes:
+        - createTable:
+            tableName: shifts
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: business_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(4000)
+              - column:
+                  name: hourly_rate
+                  type: numeric(10,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: starts_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ends_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: city
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address
+                  type: varchar(500)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: required_count
+                  type: integer
+                  constraints:
+                    nullable: false
+                  defaultValueNumeric: 1
+              - column:
+                  name: status
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+                  defaultValue: 'DRAFT'
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false

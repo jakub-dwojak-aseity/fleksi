@@ -4,7 +4,17 @@
       "Bash(mkdir:*)",
       "Bash(rm:*)",
       "Bash(gradle:*)",
-      "Bash(./gradlew:*)"
+      "Bash(./gradlew:*)",
+      "Bash(npm install)",
+      "Bash(cd:*)",
+      "Bash(npm run lint:*)",
+      "Bash(docker-compose up:*)",
+      "Bash(docker-compose:*)",
+      "Bash(yarn install)",
+      "Bash(npm run gen:client:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(docker:*)",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": []

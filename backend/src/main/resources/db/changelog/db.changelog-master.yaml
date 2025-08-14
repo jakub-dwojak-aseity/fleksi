@@ -1,0 +1,22 @@
+databaseChangeLog:
+  # Version 1.0 - Initial Fleksi MVP Schema
+  - include:
+      file: db/changelog/v1.0/001-user-domain.yaml
+  - include:
+      file: db/changelog/v1.0/002-business-domain.yaml
+  - include:
+      file: db/changelog/v1.0/003-shift-domain.yaml
+  - include:
+      file: db/changelog/v1.0/004-application-domain.yaml
+  - include:
+      file: db/changelog/v1.0/005-attendance-domain.yaml
+  - include:
+      file: db/changelog/v1.0/006-payout-domain.yaml
+  - include:
+      file: db/changelog/v1.0/007-indexes.yaml
+  - include:
+      file: db/changelog/v1.0/008-seed-dev-users.yaml
+  - include:
+      file: db/changelog/v1.0/009-seed-test-businesses.yaml
+  - include:
+      file: db/changelog/v1.0/010-seed-sample-shifts.yaml

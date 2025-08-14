@@ -1,5 +1,6 @@
 plugins {
     java
+    groovy
     id("org.springframework.boot") version "3.3.4"
     id("io.spring.dependency-management") version "1.1.6"
     id("org.openapi.generator") version "7.8.0"
@@ -37,6 +38,23 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-impl:0.12.6")
     implementation("io.jsonwebtoken:jjwt-jackson:0.12.6")
     
+    // OpenAPI generated code dependencies
+    implementation("io.swagger.core.v3:swagger-annotations:2.2.22")
+    implementation("org.openapitools:jackson-databind-nullable:0.2.6")
+    
+    // Liquibase for database migrations
+    implementation("org.liquibase:liquibase-core")
+    
+    // MapStruct for mapping DTOs
+    implementation("org.mapstruct:mapstruct:1.5.5.Final")
+    annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
+    
+    // QueryDSL for type-safe queries
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
+    annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+    annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+    
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     
@@ -44,6 +62,11 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
+    
+    // Spock Framework
+    testImplementation("org.spockframework:spock-core:2.3-groovy-4.0")
+    testImplementation("org.spockframework:spock-spring:2.3-groovy-4.0")
+    
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

@@ -1,52 +1,387 @@
 openapi: 3.0.3
 info:
   title: Fleksi API
-  description: API-first specification for Fleksi platform
+  version: 1.0.0
+  description: API-first contract for Fleksi (gig/shift marketplace)
   contact:
     name: Fleksi Development Team
     email: dev@fleksi.pl
-  version: 1.0.0
 servers:
+  - url: https://api.fleksi.local/api/v1
+    description: local
   - url: http://localhost:8080/api/v1
     description: Local development server
 tags:
-  - name: auth
+  - name: Auth
     description: Authentication operations
-  - name: shift
+  - name: Shifts
     description: Shift management operations
-  - name: application
+  - name: Applications
     description: Application operations
-  - name: attendance
+  - name: Attendance
     description: Attendance tracking operations
 paths:
-  /health:
-    get:
-      tags:
-        - system
-      summary: Health check endpoint
-      description: Returns the health status of the API
-      operationId: healthCheck
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Login with email+password
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/LoginRequest' }
       responses:
         '200':
-          description: API is healthy
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AuthToken' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /shifts:
+    get:
+      tags: [Shifts]
+      summary: List open shifts
+      operationId: getShifts
+      security: []
+      parameters:
+        - in: query
+          name: city
+          schema: { type: string }
+        - in: query
+          name: from
+          schema: { type: string, format: date-time }
+        - in: query
+          name: to
+          schema: { type: string, format: date-time }
+        - in: query
+          name: page
+          schema: { type: integer, minimum: 0, default: 0 }
+        - in: query
+          name: size
+          schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+        - in: query
+          name: sort
+          schema: { type: string, example: "startsAt,asc" }
+      responses:
+        '200':
+          description: Page of shifts
+          headers:
+            X-Total-Count: { schema: { type: integer } }
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  status:
-                    type: string
-                    example: "healthy"
-                  timestamp:
-                    type: string
-                    format: date-time
-                required:
-                  - status
-                  - timestamp
+                  content:
+                    type: array
+                    items: { $ref: '#/components/schemas/Shift' }
+                  page: { $ref: '#/components/schemas/PageMeta' }
+    post:
+      tags: [Shifts]
+      summary: Create a shift (BUSINESS)
+      operationId: createShift
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ShiftCreate' }
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Shift' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /shifts/{id}:
+    get:
+      tags: [Shifts]
+      summary: Get shift by id
+      operationId: getShift
+      security: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Shift' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    patch:
+      tags: [Shifts]
+      summary: Update shift (BUSINESS)
+      operationId: updateShift
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ShiftUpdate' }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Shift' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /shifts/{id}/apply:
+    post:
+      tags: [Applications]
+      summary: Apply for a shift (WORKER)
+      operationId: applyForShift
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Application' }
+        '409':
+          description: Already applied
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /applications/{id}/accept:
+    post:
+      tags: [Applications]
+      summary: Accept worker (BUSINESS)
+      operationId: acceptApplication
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Application' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /applications/{id}/reject:
+    post:
+      tags: [Applications]
+      summary: Reject worker (BUSINESS)
+      operationId: rejectApplication
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Application' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /shifts/{id}/check-in:
+    post:
+      tags: [Attendance]
+      summary: Worker check-in
+      operationId: checkIn
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Attendance' }
+        '409':
+          description: Already checked-in
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /shifts/{id}/check-out:
+    post:
+      tags: [Attendance]
+      summary: Worker check-out
+      operationId: checkOut
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Attendance' }
+        '409':
+          description: Not checked-in yet
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /attendance/{id}/approve:
+    post:
+      tags: [Attendance]
+      summary: Business approves attendance
+      operationId: approveAttendance
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Attendance' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
 components:
-  schemas: {}
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+  schemas:
+    PageMeta:
+      type: object
+      properties:
+        page: { type: integer, minimum: 0 }
+        size: { type: integer, minimum: 1 }
+        totalElements: { type: integer, minimum: 0 }
+        totalPages: { type: integer, minimum: 0 }
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string, format: email }
+        password: { type: string, minLength: 8 }
+    AuthToken:
+      type: object
+      properties:
+        accessToken: { type: string }
+        tokenType: { type: string, example: "Bearer" }
+        expiresIn: { type: integer, example: 3600 }
+        user:
+          type: object
+          properties:
+            id: { type: string, format: uuid }
+            role: { type: string, enum: [WORKER, BUSINESS, ADMIN] }
+    Shift:
+      type: object
+      required: [id, businessId, title, hourlyRate, startsAt, endsAt, status]
+      properties:
+        id: { type: string, format: uuid }
+        businessId: { type: string, format: uuid }
+        title: { type: string, minLength: 3, maxLength: 100 }
+        description: { type: string, maxLength: 4000 }
+        hourlyRate: { type: number, format: double, minimum: 0 }
+        startsAt: { type: string, format: date-time }
+        endsAt: { type: string, format: date-time }
+        city: { type: string }
+        address: { type: string }
+        requiredCount: { type: integer, minimum: 1, default: 1 }
+        status: { type: string, enum: [DRAFT, OPEN, CLOSED, CANCELLED] }
+        createdAt: { type: string, format: date-time }
+    ShiftCreate:
+      type: object
+      required: [title, hourlyRate, startsAt, endsAt, city, address, requiredCount]
+      properties:
+        title: { type: string, minLength: 3, maxLength: 100 }
+        description: { type: string, maxLength: 4000 }
+        hourlyRate: { type: number, format: double, minimum: 0 }
+        startsAt: { type: string, format: date-time }
+        endsAt: { type: string, format: date-time }
+        city: { type: string }
+        address: { type: string }
+        requiredCount: { type: integer, minimum: 1, default: 1 }
+    ShiftUpdate:
+      type: object
+      properties:
+        title: { type: string, minLength: 3, maxLength: 100 }
+        description: { type: string, maxLength: 4000 }
+        hourlyRate: { type: number, format: double, minimum: 0 }
+        startsAt: { type: string, format: date-time }
+        endsAt: { type: string, format: date-time }
+        requiredCount: { type: integer, minimum: 1 }
+        status: { type: string, enum: [DRAFT, OPEN, CLOSED, CANCELLED] }
+    Application:
+      type: object
+      required: [id, shiftId, userId, status, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        shiftId: { type: string, format: uuid }
+        userId: { type: string, format: uuid }
+        status: { type: string, enum: [APPLIED, ACCEPTED, REJECTED, CANCELLED] }
+        createdAt: { type: string, format: date-time }
+    Attendance:
+      type: object
+      required: [id, shiftId, userId]
+      properties:
+        id: { type: string, format: uuid }
+        shiftId: { type: string, format: uuid }
+        userId: { type: string, format: uuid }
+        checkInAt: { type: string, format: date-time, nullable: true }
+        checkOutAt: { type: string, format: date-time, nullable: true }
+        approvedByBusiness: { type: boolean, default: false }
+    Error:
+      type: object
+      required: [type, title, status]
+      properties:
+        type: { type: string, example: "about:blank" }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        instance: { type: string }
+security: [{ bearerAuth: [] }]

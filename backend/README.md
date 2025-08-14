@@ -57,30 +57,40 @@ Package-by-feature organization under `pl.com.aseity.{feature}`:
 
 ```
 src/main/java/pl/com/aseity/
-├── auth/
+├── user/
 │   ├── api/           # Controllers implementing generated interfaces
 │   ├── service/       # Business logic
-│   ├── domain/        # Entities, enums
-│   └── persistence/   # Repositories
+│   ├── domain/        # Entities, enums, repositories
+│   └── mapper/        # MapStruct mappers
+├── business/
+│   ├── api/
+│   ├── service/
+│   ├── domain/
+│   └── mapper/
 ├── shift/
 │   ├── api/
 │   ├── service/
 │   ├── domain/
-│   └── persistence/
+│   └── mapper/
 ├── application/
 │   ├── api/
 │   ├── service/
 │   ├── domain/
-│   └── persistence/
+│   └── mapper/
 ├── attendance/
 │   ├── api/
 │   ├── service/
 │   ├── domain/
-│   └── persistence/
+│   └── mapper/
+├── payout/
+│   ├── api/
+│   ├── service/
+│   ├── domain/
+│   └── mapper/
 └── common/            # Cross-cutting concerns
-    ├── config/
-    ├── exception/
-    └── util/
+    ├── config/        # Spring configuration
+    ├── error/         # Exception handling
+    └── audit/         # JPA auditing
 ```
 
 ## Key Principles
@@ -89,6 +99,32 @@ src/main/java/pl/com/aseity/
 2. **Generated Interfaces**: Implement generated controller interfaces in feature packages
 3. **Package-by-Feature**: Keep all feature components together
 4. **No Global Packages**: Avoid global controller/service/repository packages
+
+## Code Style Guidelines
+
+### Access Modifiers
+- Use `private` access modifier wherever possible for fields, methods, and nested classes
+- Only use more permissive access when absolutely necessary for functionality
+
+### Lombok Usage
+- Use Lombok annotations for constructors, getters, setters, and builders
+- Apply `@NoArgsConstructor(access = AccessLevel.PRIVATE)` for utility classes
+- Prefer specific annotations over `@Data` when possible
+
+### Constants and Magic Values
+- Avoid magic strings and magic numbers - use constants instead
+- Create dedicated constant classes (e.g., `ErrorTypes`, `ErrorMessages`)
+- Store test constants in test utility classes for assertions
+
+### Database
+- Use Liquibase YAML format for database migrations
+- Organize changeSets by domain feature in versioned directories
+- Use QueryDSL for type-safe queries over manual @Query annotations
+
+### Testing
+- Use Spock Framework (Groovy) for all tests
+- Create test data factories with constants for expected values
+- Use Testcontainers for integration tests
 
 ## Configuration
 

@@ -1,0 +1,90 @@
+databaseChangeLog:
+  - changeSet:
+      id: 010-seed-sample-shifts
+      author: fleksi-team
+      context: dev
+      changes:
+        - insert:
+            tableName: shifts
+            columns:
+              - column:
+                  name: id
+                  value: '770e8400-e29b-41d4-a716-446655440001'
+              - column:
+                  name: business_id
+                  value: '660e8400-e29b-41d4-a716-446655440001'
+              - column:
+                  name: title
+                  value: 'Kelner - wieczór piątkowy'
+              - column:
+                  name: description
+                  value: 'Obsługa gości w restauracji. Doświadczenie mile widziane.'
+              - column:
+                  name: hourly_rate
+                  valueNumeric: 25.50
+              - column:
+                  name: starts_at
+                  valueDate: '2024-12-20T18:00:00Z'
+              - column:
+                  name: ends_at
+                  valueDate: '2024-12-20T24:00:00Z'
+              - column:
+                  name: city
+                  value: 'Warszawa'
+              - column:
+                  name: address
+                  value: 'ul. Główna 123, 00-001 Warszawa'
+              - column:
+                  name: required_count
+                  valueNumeric: 2
+              - column:
+                  name: status
+                  value: 'OPEN'
+              - column:
+                  name: created_at
+                  valueDate: '2024-01-01T10:00:00Z'
+              - column:
+                  name: updated_at
+                  valueDate: '2024-01-01T10:00:00Z'
+        - insert:
+            tableName: shifts
+            columns:
+              - column:
+                  name: id
+                  value: '770e8400-e29b-41d4-a716-446655440002'
+              - column:
+                  name: business_id
+                  value: '660e8400-e29b-41d4-a716-446655440002'
+              - column:
+                  name: title
+                  value: 'Barista - poranny'
+              - column:
+                  name: description
+                  value: 'Przygotowywanie kawy i obsługa klientów w kawiarni.'
+              - column:
+                  name: hourly_rate
+                  valueNumeric: 22.00
+              - column:
+                  name: starts_at
+                  valueDate: '2024-12-21T06:00:00Z'
+              - column:
+                  name: ends_at
+                  valueDate: '2024-12-21T14:00:00Z'
+              - column:
+                  name: city
+                  value: 'Warszawa'
+              - column:
+                  name: address
+                  value: 'ul. Nowy Świat 45, 00-042 Warszawa'
+              - column:
+                  name: required_count
+                  valueNumeric: 1
+              - column:
+                  name: status
+                  value: 'OPEN'
+              - column:
+                  name: created_at
+                  valueDate: '2024-01-01T10:00:00Z'
+              - column:
+                  name: updated_at
+                  valueDate: '2024-01-01T10:00:00Z'

@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-create-attendances-table
+      author: fleksi-team
+      changes:
+        - createTable:
+            tableName: attendances
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: shift_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: check_in_at
+                  type: timestamp with time zone
+              - column:
+                  name: check_out_at
+                  type: timestamp with time zone
+              - column:
+                  name: approved_by_business
+                  type: boolean
+                  constraints:
+                    nullable: false
+                  defaultValueBoolean: false
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false

@@ -4,7 +4,7 @@
   "description": "Fleksi API-first monorepo",
   "private": true,
   "scripts": {
-    "lint:api": "spectral lint openapi/fleksi.yml"
+    "lint:api": "spectral lint openapi/fleksi.yml --ruleset openapi/.spectral.json"
   },
   "devDependencies": {
     "@stoplight/spectral-cli": "^6.11.0"

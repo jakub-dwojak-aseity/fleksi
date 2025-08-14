@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-create-payouts-table
+      author: fleksi-team
+      changes:
+        - createTable:
+            tableName: payouts
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: attendance_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount_gross
+                  type: numeric(10,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+                  defaultValue: 'PENDING'
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
