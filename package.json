@@ -1,0 +1,15 @@
+{
+  "name": "fleksi",
+  "version": "1.0.0",
+  "description": "Fleksi API-first monorepo",
+  "private": true,
+  "scripts": {
+    "lint:api": "spectral lint openapi/fleksi.yml"
+  },
+  "devDependencies": {
+    "@stoplight/spectral-cli": "^6.11.0"
+  },
+  "workspaces": [
+    "mobile"
+  ]
+}

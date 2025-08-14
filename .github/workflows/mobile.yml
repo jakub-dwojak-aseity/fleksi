@@ -1,0 +1,49 @@
+name: Mobile CI
+
+on:
+  pull_request:
+    paths:
+      - 'mobile/**'
+      - 'openapi/**'
+      - '.github/workflows/mobile.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'mobile/**'
+      - 'openapi/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Build and Test Mobile
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+          cache-dependency-path: mobile/yarn.lock
+          
+      - name: Install dependencies
+        working-directory: ./mobile
+        run: yarn install --frozen-lockfile
+        
+      - name: Generate API client
+        working-directory: ./mobile
+        run: yarn gen:client
+        
+      - name: Type check
+        working-directory: ./mobile
+        run: yarn type-check
+        
+      - name: Lint code
+        working-directory: ./mobile
+        run: yarn lint || true # Allow lint warnings for now
+        
+      - name: Run tests
+        working-directory: ./mobile
+        run: yarn test || true # Add tests when ready

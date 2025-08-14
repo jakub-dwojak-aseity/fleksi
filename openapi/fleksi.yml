@@ -1,0 +1,52 @@
+openapi: 3.0.3
+info:
+  title: Fleksi API
+  description: API-first specification for Fleksi platform
+  contact:
+    name: Fleksi Development Team
+    email: dev@fleksi.pl
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api/v1
+    description: Local development server
+tags:
+  - name: auth
+    description: Authentication operations
+  - name: shift
+    description: Shift management operations
+  - name: application
+    description: Application operations
+  - name: attendance
+    description: Attendance tracking operations
+paths:
+  /health:
+    get:
+      tags:
+        - system
+      summary: Health check endpoint
+      description: Returns the health status of the API
+      operationId: healthCheck
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  timestamp:
+                    type: string
+                    format: date-time
+                required:
+                  - status
+                  - timestamp
+components:
+  schemas: {}
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

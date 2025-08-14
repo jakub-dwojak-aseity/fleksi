@@ -1,0 +1,145 @@
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+.env.test
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Expo
+.expo/
+dist/
+web-build/
+
+# Generated API clients
+mobile/src/api/apis/
+mobile/src/api/models/
+mobile/src/api/index.ts
+mobile/src/api/base.ts
+mobile/src/api/common.ts
+mobile/src/api/configuration.ts
+
+# Backend generated sources
+backend/build/generated/
+
+# Gradle
+backend/.gradle/
+backend/build/
+backend/gradle/
+backend/gradlew
+backend/gradlew.bat
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+
+# Spring Boot
+backend/target/
+backend/.mvn/
+
+# Database
+*.db
+*.sqlite
+
+# Docker
+.docker/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Backup files
+*.bak
+*.backup
+
+# Security
+*.pem
+*.key
+!*.pub
+
+# Local configuration
+local.properties
+config/local/
+
+# Build artifacts
+dist/
+build/
+out/
+
+# Test results
+test-results/
+coverage/
+*.coverage
+
+# Cache directories
+.cache/
+.parcel-cache/
+
+# Lock files (keep yarn.lock, remove others)
+package-lock.json
+
+# Runtime directories
+tmp/
+temp/
